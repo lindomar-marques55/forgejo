@@ -1,0 +1,43 @@
+services:
+  forgejo:
+    image: codeberg.org/forgejo/forgejo:15.0.11
+    container_name: forgejo
+    restart: unless-stopped
+    environment:
+      USER_UID: "1000"
+      USER_GID: "1000"
+      FORGEJO__server__DOMAIN: "10.1.1.6"
+      FORGEJO__server__SSH_DOMAIN: "10.1.1.6"
+      FORGEJO__server__SSH_PORT: "2222"
+      FORGEJO__server__SSH_LISTEN_PORT: "22"
+      FORGEJO__server__ROOT_URL: "http://10.1.1.6:3010/"
+      FORGEJO__service__DISABLE_REGISTRATION: "true"
+    ports:
+      - "10.1.1.6:3010:3000"
+      - "10.1.1.6:2222:22"
+    volumes:
+      - /DATA/AppData/forgejo/data:/data
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      icon: "https://forgejo.org/favicon.svg"
+
+x-casaos:
+  id: com.lindomar.forgejo
+  main: forgejo
+  index: /
+  port_map: "3010"
+  scheme: http
+  title:
+    en_US: Forgejo
+    pt_BR: Forgejo
+  tagline:
+    en_US: Self-hosted Git service
+    pt_BR: Git próprio no servidor
+  description:
+    en_US: Host Git repositories and collaborate on code on your own server.
+    pt_BR: Hospede repositórios Git e colabore no código no seu próprio servidor.
+  author: Forgejo
+  developer: Forgejo
+  category: Development
+  version: "15.0.11"
+
